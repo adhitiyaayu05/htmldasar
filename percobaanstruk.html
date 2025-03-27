@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laju Prima Bus Ticket</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            padding: 15px;
+        }
+        .ticket-container {
+            width: 100%;
+            max-width: 350px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .ticket-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .ticket-header h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .ticket-header p {
+            font-size: 14px;
+            color: #666;
+        }
+        .ticket-details {
+            margin-bottom: 15px;
+        }
+        .ticket-details .row {
+            display: flex;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .ticket-details .label {
+            font-weight: bold;
+            width: 120px;
+            color: #333;
+        }
+        .ticket-details .value {
+            flex-grow: 1;
+            color: #666;
+        }
+        .ticket-notes {
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .ticket-notes p {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 3px;
+        }
+        .qr-code {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        #print-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        #print-btn:hover {
+            background-color: #0056b3;
+        }
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .ticket-container {
+                width: 100%;
+                max-width: none;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+            #print-btn {
+                display: none;
+            }
+        }
+        @media screen and (max-width: 375px) {
+            .ticket-container {
+                padding: 15px;
+            }
+            .ticket-details .label {
+                width: 100px;
+                font-size: 13px;
+            }
+            .ticket-details .value {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket-container">
+        <div class="ticket-header">
+            <h2>TIKET BOARDING : LAJU PRIMA</h2>
+            <p>MERAK - Ponorogo </p>
+            <p>Call Center 0838-1310-9456</p>
+        </div>
+        
+        <div class="ticket-details">
+            <div class="row">
+                <span class="label">No. Kursi :</span>
+                <span class="value">7a</span>
+            </div>
+            <div class="row">
+                <span class="label">Nama :</span>
+                <span class="value">Erina</span>
+            </div>
+            <div class="row">
+                <span class="label">Naik :</span>
+                <span class="value">Gorda</span>
+            </div>
+            <div class="row">
+                <span class="label">Tujuan :</span>
+                <span class="value">Gendingan</span>
+            </div>
+            <div class="row">
+                <span class="label">No. Bus :</span>
+                <span class="value">-</span>
+            </div>
+            <div class="row">
+                <span class="label">Hari/Tanggal :</span>
+                <span class="value">Jumat/ 28 Maret 2025</span>
+            </div>
+            <div class="row">
+                <span class="label">Jam Berangkat :</span>
+                <span class="value">17.00</span>
+            </div>
+            <div class="row">
+                <span class="label">Biaya :</span>
+                <span class="value">Rp.620.000</span>
+            </div>
+        </div>
+
+        <div class="ticket-notes">
+            <p>- Barang milik Penumpang yang hilang tidak atau tertinggal</p>
+            <p>  diluar tanggung jawab Perusahaan</p>
+            <p>- Tiket yang sudah dibeli tidak dapat dikembalikan</p>
+            <p>- Penumpang harus sudah berada di lokasi keberangkatan</p>
+            <p>  keterangan 30 menit sebelumnya</p>
+        </div>
+
+        <div class="qr-code">
+            <img id="qr-code-image" src="" alt="QR Code" width="200" height="200">
+        </div>
+
+        <button id="print-btn">Cetak Struk</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+    <script>
+        // Function to generate QR Code
+        function generateQRCode() {
+            const qrData = JSON.stringify({
+                noKursi: "7a",
+                nama: "Erina",
+                dari: "Gorda",
+                tujuan: "Gendingan",
+                noBus: "-",
+                hariTanggal: "Jumat/ 28 Maret 2025",
+                jamBerangkat: "17.00",
+                biaya: "Rp.620.000"
+            });
+
+            const qr = qrcode(0, 'M');
+            qr.addData(qrData);
+            qr.make();
+            document.getElementById('qr-code-image').src = qr.createDataURL();
+        }
+
+        // Print functionality
+        document.getElementById('print-btn').addEventListener('click', function() {
+            window.print();
+        });
+
+        // Generate QR Code on page load
+        window.onload = generateQRCode;
+    </script>
+</body>
+</html>
